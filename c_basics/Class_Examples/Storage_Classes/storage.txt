@@ -1,0 +1,164 @@
+where      storage_class     storage_class_specifier     place_of_storage     Default_value          scope           				 Life_time
+____________________________________________________________________________________________________________________________________________________________________________________
+local       automatic                auto                     stack            garbage_value       with_in_block{....}     		   Till the end of function
+																
+global       external                extern                   data                zero               global to end_of_file		  long,till the end of programme
+																
+local 	     static		     static		      data		  zero		     with_in_block{....}		   long,till the end of programme
+
+global	     static                  static		      data		  zero		     End_of_file		         long,till the end of programme
+
+local	     register		     register		      CPU register       garbage_value	     with_in_block				till end of function
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include<stdio.h>
+int x;//default it considered as extern (extern int x)
+int fun1();
+int fun();
+int main()
+{
+printf("main:%d %p\n",x,&x);//output:main:0 0x563ea9750014
+fun ();
+fun();
+printf("main:%d %p\n",x,&x);//output:main:2 0x563ea9750014 because function called two times so incremented x value two times.
+fun1();
+}
+int fun()
+{
+x++;
+printf("fun:%d %p\n",x,&x);//output:fun:1 0x563ea9750014
+				    fun:2 0x563ea9750014
+}
+
+
+#include<stdio.h>
+int x;//default considered as extern (extern int x)
+int fun1()
+{
+x++;
+printf("fun1:%d %p\n",x,&x);//output:fun1:3 0x563ea9750014
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include<stdio.h>
+static int x;//global static so same memory address allocated till the end of file
+int fun1();
+int fun();
+int main()
+{
+printf("main:%d %p\n",x,&x);//output:main:0 0x563ea9750014
+fun (); 
+fun();
+printf("main:%d %p\n",x,&x);//output:main:2 0x563ea9750014 because function called two times so incremented x value two times.
+fun1();
+}
+int fun()
+{
+x++;
+printf("fun:%d %p\n",x,&x);//output:fun:1 0x563ea9750014
+                                    fun:2 0x563ea9750014
+}
+
+
+#include<stdio.h>
+static int x;//another memory address allocated for x variable.
+int fun1()
+{
+x++;
+printf("fun1:%d %p\n",x,&x);//output:fun1:1 0x563ea9750018//compiler allocated another memory address to x variable
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include<stdio.h>
+static int x;//global static so same memory address allocated tii the end of file
+int fun1();
+int fun();
+int main()
+{
+printf("main:%d %p\n",x,&x);//output:main:0 0x558647fa3014
+fun (); 
+fun();
+printf("main:%d %p\n",x,&x);//output:main:0 0x558647fa3014 because function called two times and x value not changed.
+fun1();
+}
+int fun()
+{
+static int x;// local static
+x++;
+printf("fun:%d %p\n",x,&x);//outputfun:1 0x558647fa3018//local increment scope within the function only.
+				   fun:2 0x558647fa3018
+}
+
+
+#include<stdio.h>
+static int x;//global static
+int fun1()
+{
+x++;
+printf("fun1:%d %p\n",x,&x);//output:fun1:1 0x558647fa301c //compiler allocated another memory address to x variable
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include<stdio.h>
+int x;//default it considered as extern (extern int x)
+int fun1();
+int main()
+{
+printf("main:%d %p\n",x,&x);//output:main:0 0x563ea9750014
+fun (); 
+fun();
+printf("main:%d %p\n",x,&x);//output:main:2 0x563ea9750014 because function called two times so incremented x value two times.
+fun1();
+}
+int fun()
+{
+x++;
+printf("fun:%d %p\n",x,&x);//output:fun:1 0x563ea9750014
+                                    fun:2 0x563ea9750014
+}
+
+
+#include<stdio.h>
+int x;//default considered as extern (extern int x)
+int fun1()
+{
+x++;
+printf("fun1:%d %p\n",x,&x);//output:fun1:3 0x563ea9750014
+}
+
+1.c: In function ‘main’:
+1.c:8:1: warning: implicit declaration of function ‘fun’; did you mean ‘fun1’? [-Wimplicit-function-declaration]
+ fun ();
+ ^~~
+ fun1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include<stdio.h>
+int fun();
+int fun1();
+int main()
+{
+static int x;
+printf("main:%d %p\n",x,&x);
+fun ();
+fun();
+printf("main:%d %p\n",x,&x);
+fun1();
+}
+
+int fun()
+{
+extern int x;//through error
+x++;
+printf("fun:%d %p\n",x,&x);
+}
+
+/tmp/ccpK8li4.o: In function `fun':
+1.c:(.text+0x6f): undefined reference to `x'
+1.c:(.text+0x78): undefined reference to `x'
+1.c:(.text+0x7e): undefined reference to `x'
+1.c:(.text+0x85): undefined reference to `x'
+collect2: error: ld returned 1 exit status
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

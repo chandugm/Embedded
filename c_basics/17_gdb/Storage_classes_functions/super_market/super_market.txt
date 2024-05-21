@@ -1,0 +1,173 @@
+km@KernelMasters:~/KM_GIT/km54aesd11/gdb/Storage_classes_functions/3_super_market$ gdb super_market-dbg 
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from super_market-dbg...done.
+(gdb) b sale.c:sell
+Breakpoint 1 at 0x89f: file sale.c, line 6.
+(gdb) b purchase.c:purchase
+Breakpoint 2 at 0x82c: file purchase.c, line 6.
+(gdb) i b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x000000000000089f in sell at sale.c:6
+2       breakpoint     keep y   0x000000000000082c in purchase at purchase.c:6
+(gdb) s
+The program is not being run.
+(gdb) r
+Starting program: /home/km/KM_GIT/km54aesd11/gdb/Storage_classes_functions/3_super_market/super_market-dbg 
+1:check stock 
+2:sell 
+3:purchase 
+4:Quit
+Select your option
+1
+Available stock:1000
+1:check stock 
+2:sell 
+3:purchase 
+4:Quit
+Select your option
+2
+
+Breakpoint 1, sell () at sale.c:6
+6		printf("Enter no.of items\n");
+(gdb) n
+Enter no.of items
+7		scanf("%d",&n_items);
+(gdb) n
+500
+8		if (n_items<=0)
+(gdb) watch stoc
+Hardware watchpoint 3: stoc
+(gdb) s
+12		else if (n_items > stoc)
+(gdb) s
+19			delete_stock(n_items);
+(gdb) s
+delete_stock (n_items=500) at stock.c:9
+9	stoc-=n_items;
+(gdb) n
+
+Hardware watchpoint 3: stoc
+
+Old value = 1000
+New value = 500
+delete_stock (n_items=500) at stock.c:10
+10	}
+(gdb) s
+sell () at sale.c:21
+21	}
+(gdb) s
+main () at main.c:8
+8	printf("1:check stock \n2:sell \n3:purchase \n4:Quit\n");
+(gdb) n
+1:check stock 
+2:sell 
+3:purchase 
+4:Quit
+9	printf("Select your option\n");
+(gdb) n
+Select your option
+10	scanf("%d",&choice);
+(gdb) n
+3
+11	switch(choice)
+(gdb) s
+15	case 3:purchase();break;
+(gdb) s
+
+Breakpoint 2, purchase () at purchase.c:6
+6	        printf("Enter no.of items\n");
+(gdb) n
+Enter no.of items
+7	        scanf("%d",&nitems);
+(gdb) n
+1500
+8	        if (nitems<=0)
+(gdb) s
+12	        else if (nitems+stoc > 1000)
+(gdb) s
+14			printf("Stock available no need to purchase\n");
+(gdb) n
+Stock available no need to purchase
+20	}
+(gdb) s
+main () at main.c:8
+8	printf("1:check stock \n2:sell \n3:purchase \n4:Quit\n");
+(gdb) n
+1:check stock 
+2:sell 
+3:purchase 
+4:Quit
+9	printf("Select your option\n");
+(gdb) n
+Select your option
+10	scanf("%d",&choice);
+(gdb) n
+3
+11	switch(choice)
+(gdb) 
+15	case 3:purchase();break;
+(gdb) 
+
+Breakpoint 2, purchase () at purchase.c:6
+6	        printf("Enter no.of items\n");
+(gdb) n
+Enter no.of items
+7	        scanf("%d",&nitems);
+(gdb) n
+200
+8	        if (nitems<=0)
+(gdb) s
+12	        else if (nitems+stoc > 1000)
+(gdb) 
+18	                 add_stock(nitems);
+(gdb) 
+add_stock (nitems=200) at stock.c:5
+5	stoc+=nitems;
+(gdb) 
+
+Hardware watchpoint 3: stoc
+
+Old value = 500
+New value = 700
+add_stock (nitems=200) at stock.c:6
+6	}
+(gdb) 
+purchase () at purchase.c:20
+20	}
+(gdb) 
+main () at main.c:8
+8	printf("1:check stock \n2:sell \n3:purchase \n4:Quit\n");
+(gdb) n
+1:check stock 
+2:sell 
+3:purchase 
+4:Quit
+9	printf("Select your option\n");
+(gdb) n
+Select your option
+10	scanf("%d",&choice);
+(gdb) n
+4
+11	switch(choice)
+(gdb) n
+16	case 4:return 0;
+(gdb) n
+20	}
+(gdb) n
+__libc_start_main (main=0x55555555476a <main>, argc=1, argv=0x7fffffffdf88, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffdf78) at ../csu/libc-start.c:344
+344	../csu/libc-start.c: No such file or directory.
+(gdb) 
+

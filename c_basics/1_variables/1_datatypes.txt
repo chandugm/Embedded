@@ -1,0 +1,12 @@
+     Data type                   formatt specifier                       
+int or signed int                    %d,%i,%o
+unsigned int                            %u
+short int or signed short int           %hd
+unsigned short int                      %hu
+long int or signed long int             %ld
+unsigned long int                       %lu
+float                                   %f,%g,%e
+double                                  %lf
+long double                             %Lf
+signed char                             %c
+unsigned char                           %c 
