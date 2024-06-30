@@ -1,0 +1,19 @@
+MOV Rd,M
+10T:LXI H,4000
+7T:MOV A,M
+
+
+LDAX Rp
+LXI B,4000
+LDAX B
+
+
+
+LDA 16-bit
+LDA 4000
+
+
+LHLD 16-bit Add
+LHLD 4000
+MOV A,M
+HLT

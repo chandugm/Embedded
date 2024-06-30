@@ -1,0 +1,4 @@
+MOV M,Rs              MVI M,(8-bit data)        STA 16 bit ADD          STAX Rp
+7T:MVI B,12H         10T: LXI H,4000          7T: MVI A,12           10: LXI B,4000
+10T:LXI H,4000H      7T:   MVI M,12           13T: STA 4000          7T: MVI A,12
+7T:MOV M,B                                                           7T: STAX B

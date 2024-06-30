@@ -1,0 +1,60 @@
+Problems Faced during Embedded C Programming:
+1.While using Switch, Not initialized Pull-Up resistor (PUPDR) 
+	a.The switch will not work
+2.Switch not working
+	a.Clock is not initialized [RCC_AHB1ENR] for PORT-C But the Switch is Enabled in PORT-C.
+	b.Enabling the wrong port number for the desired switch.
+3.Particular port not enabling
+	a.Calculating Physical Address is wrong.
+4.Debug window in Keil select Correct Hardware device [ST-link debug] and its frequency [16 MHz ].
+5.Facing a loading problem 
+	a.Enable the Reset and Run option in Flash download settings in the Debug window
+	b.In Trace change the core frequency to 16-MHz (default frequency).
+	c.In the Debug window of the Cortex-M target Driver setup the port must be selected as SW (serial wire debugger) or (JTAG) based on your debugging device.
+	d.In the flash download tab if the device is removed from the programming algorithm add the device.
+- 
+6.Assigning 32-bit address as 8-digit hex number[0x12345678] but  giving 7-digit [0x1234567] or 9-hexa number[0x123456789] is not wrong but some conditions it fails.
+7.Assuming the wrong Bus when the time of enabling clock.
+8.While defining Addresses use type casting like *(int*) for a 32-bit system. If you miss the typecasting, you will get the following error.
+	a.#define RCC_AHB1ENR     0x40023830 //physical address of RCC_AHB1ENR (Type casting missed)
+	b.Giving space in between the 32-bit address also gives the following error.  
+	c.#define RCC_AHB1ENR    *(int*)  0x4002_3830 //Don’t give space in between address
+	d.#define RCC_AHB1ENR    *(int*)  0x40023830 ;//Don’t place semicolon after macro
+	e.RCC_AHB1ENR |=( 0x1<<1); //when we try to use this 
+	f.Error: Expression not assignable
+9.When hardcoded hexadecimal numbers are used don’t use the tilt symbol in clearing particular bit fields.
+	a.SYSCFG_EXTICR3 &  = ~  (0xFFFFFF00);
+10.Pick the correct External interrupt handler name in the source code.
+	a.EXTI9_5_IRQHandler [for 8 and 9 interrupts]
+	b.If we place another IRQHandler like EXTI15_10_IRQHandler [ for 8 and 9], an External interrupt will not work when we press the switch.
+11.error: declaration may not appear after an executable statement in a block
+	a.int remaining _Len = Len - i;  //Here declared the variable inside the for loop 
+	b.Declare before the Block
+12.Problem: Automatic triggering problem inside ADC IRQ Handler when we placed breakpoint. 
+a.Don’t Configure External interrupt inside while loop.
+i.while(1)
+	{
+	ADC_CR2 |=0x20000000;//set 29,28th bit EXTEN as Falling edge
+		ADC_CR2 |=(0xF<<24);//enable EXTEL
+    }
+	b.Configuration must be only one time. Place the configuration outside of the loop.
+13.Printing garbage strings on LCD
+	a.Write_data function in LCD loop infinite.
+	b.Writing proper conditions to get out of the loop after printing.
+14.Problem : Proper delay not coming when we used Hardware SYSTICK TIMER when printing ON LCD.
+	a.First initialize the SysTICK timer before LCD_init( ).
+15.Problem :Data not printing on LCD
+	a.Clock not initialized for PORT-B, and selecting ODR of PORT-B as OUTPUT. 
+	b.First initialize the clock.
+16.Problem: Getting the same values in two ADC channels.
+	a.Selecting the same channels in PORT-C[PC0,PC1]
+	b.Loading sequential register values wrong
+17.Problem: Response not coming in Dock light
+	a.Check array size of buffer [buffer[i]=USART_DR;]
+	b.Baud rate in dock light
+18.Problem: Response not coming in Dock light after AT_RST
+	a.Check delay for Reset command and Systick timer delay
+
+
+
+
